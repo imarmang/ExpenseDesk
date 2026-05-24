@@ -1,0 +1,88 @@
+@use '../../styles/variables' as *;
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm $spacing-lg;
+  background-color: var(--bg-secondary);
+  border-bottom: 0.5px solid var(--border-color);
+  flex-shrink: 0;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    background-color: var(--message-user-bg);
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  &__sub {
+    font-size: $font-size-xs;
+    color: var(--text-secondary);
+    line-height: 1.2;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__theme-label {
+    font-size: $font-size-xs;
+    color: var(--text-secondary);
+  }
+
+  &__icon {
+    font-size: $font-size-md;
+  }
+
+  &__toggle {
+    width: 36px;
+    height: 20px;
+    border-radius: $radius-full;
+    background-color: var(--toggle-bg);
+    position: relative;
+    cursor: pointer;
+    transition: background-color $transition-base;
+    flex-shrink: 0;
+
+    &--active {
+      background-color: var(--toggle-active-bg);
+    }
+  }
+
+  &__knob {
+    width: 14px;
+    height: 14px;
+    border-radius: $radius-full;
+    background-color: var(--toggle-knob);
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: left $transition-base;
+
+    .topbar__toggle--active & {
+      left: 19px;
+    }
+  }
+  &__theme-icon {
+  font-size: $font-size-md;
+  color: var(--text-secondary);
+  width: 16px;
+}
+}

@@ -1,0 +1,127 @@
+@use '../../styles/variables' as *;
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  max-width: $message-max-width;
+
+  &--user {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+
+  &--assistant {
+    align-self: flex-start;
+    align-items: flex-start;
+  }
+
+  &__bubble {
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    line-height: 1.6;
+
+    .message--user & {
+      background-color: var(--message-user-bg);
+      color: var(--message-user-text);
+      border-bottom-right-radius: 3px;
+    }
+
+    .message--assistant & {
+      background-color: var(--message-assistant-bg);
+      color: var(--message-assistant-text);
+      border: 0.5px solid var(--message-assistant-border);
+      border-bottom-left-radius: 3px;
+    }
+  }
+
+  &__sql {
+    background-color: var(--sql-bg);
+    border: 0.5px solid var(--sql-border);
+    border-radius: $radius-md;
+    overflow: hidden;
+    width: 100%;
+    margin-top: $spacing-xs;
+  }
+
+  &__sql-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-xs $spacing-sm;
+    background-color: var(--sql-header-bg);
+    border-bottom: 0.5px solid var(--sql-border);
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__sql-header-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  &__sql-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: $radius-full;
+    background-color: var(--sql-accent);
+  }
+
+  &__sql-label {
+    font-size: $font-size-xs;
+    color: var(--sql-header-text);
+    font-family: $font-mono;
+    letter-spacing: 0.05em;
+  }
+
+  &__sql-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__sql-copy {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: $font-size-xs;
+    color: var(--sql-header-text);
+    font-family: $font-mono;
+    transition: color $transition-fast;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      color: var(--sql-text);
+    }
+  }
+
+  &__sql-chevron {
+    font-size: $font-size-xs;
+    color: var(--sql-header-text);
+  }
+
+  &__sql-body {
+    padding: $spacing-sm $spacing-md;
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: var(--sql-text);
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  &__meta {
+    font-size: $font-size-xs;
+    color: var(--text-secondary);
+    padding: 0 $spacing-xs;
+  }
+}
