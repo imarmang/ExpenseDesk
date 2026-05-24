@@ -1,0 +1,101 @@
+@use '../../styles/variables' as *;
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  position: relative;
+  width: 100%;
+
+  &__inner {
+    max-width: $chat-max-width;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    flex: 1;
+  }
+
+  &__empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  &__empty-icon {
+    font-size: 2.5rem;
+    color: var(--text-secondary);
+    margin-bottom: $spacing-sm;
+    opacity: 0.5;
+  }
+
+  &__empty-title {
+    font-size: $font-size-lg;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__empty-sub {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: 1.7;
+
+    em {
+      font-style: italic;
+      color: var(--text-primary);
+    }
+  }
+
+  &__bubble-typing {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: $radius-full;
+    background-color: var(--text-secondary);
+    display: inline-block;
+    animation: typing 1.2s infinite;
+
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+
+  &__scroll-btn {
+    position: sticky;
+    bottom: $spacing-md;
+    align-self: center;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-full;
+    background-color: var(--message-user-bg);
+    color: var(--message-user-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity $transition-fast;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}

@@ -1,0 +1,103 @@
+[data-theme='light'] {
+  // ── Backgrounds ───────────────────────────
+  --bg-primary: #e0f2fe;
+  --bg-secondary: #bae6fd;
+  --bg-tertiary: #7dd3fc;
+
+  // ── Text ──────────────────────────────────
+  --text-primary: #0c2d4a;
+  --text-secondary: #0284c7;
+  --text-muted: #38bdf8;
+
+  // ── Borders ───────────────────────────────
+  --border-color: #7dd3fc;
+  --border-subtle: #bae6fd;
+
+  // ── Messages ──────────────────────────────
+  --message-user-bg: #0369a1;
+  --message-user-text: #e0f2fe;
+  --message-assistant-bg: #bae6fd;
+  --message-assistant-text: #0c2d4a;
+  --message-assistant-border: #7dd3fc;
+
+  // ── Input ─────────────────────────────────
+  --input-bg: #e0f2fe;
+  --input-border: #7dd3fc;
+  --input-focus-border: #0369a1;
+  --input-text: #0c2d4a;
+  --input-placeholder: #0284c7;
+
+  // ── SQL Panel ─────────────────────────────
+  --sql-bg: #1e1e2e;
+  --sql-text: #cdd6f4;
+  --sql-header-bg: #181825;
+  --sql-header-text: #a6adc8;
+  --sql-border: #313244;
+  --sql-accent: #38bdf8;
+
+  // ── Send button ───────────────────────────
+  --btn-send-bg: #0369a1;
+  --btn-send-hover: #0284c7;
+  --btn-send-icon: #e0f2fe;
+
+  // ── Theme toggle ──────────────────────────
+  --toggle-bg: #7dd3fc;
+  --toggle-knob: #ffffff;
+  --toggle-active-bg: #0369a1;
+
+  // ── Scrollbar ─────────────────────────────
+  --scrollbar-track: #bae6fd;
+  --scrollbar-thumb: #7dd3fc;
+}
+
+[data-theme='dark'] {
+  // ── Backgrounds ───────────────────────────
+  --bg-primary: #0a0f1a;
+  --bg-secondary: #0d1528;
+  --bg-tertiary: #111e36;
+
+  // ── Text ──────────────────────────────────
+  --text-primary: #f0f6ff;
+  --text-secondary: #4b6a9b;
+  --text-muted: #1e3a6e;
+
+  // ── Borders ───────────────────────────────
+  --border-color: #1a2744;
+  --border-subtle: #0d1528;
+
+  // ── Messages ──────────────────────────────
+  --message-user-bg: #1d4ed8;
+  --message-user-text: #eff6ff;
+  --message-assistant-bg: #111e36;
+  --message-assistant-text: #e0eaff;
+  --message-assistant-border: #1a2744;
+
+  // ── Input ─────────────────────────────────
+  --input-bg: #0a0f1a;
+  --input-border: #1a2744;
+  --input-focus-border: #3b82f6;
+  --input-text: #f0f6ff;
+  --input-placeholder: #4b6a9b;
+
+  // ── SQL Panel ─────────────────────────────
+  --sql-bg: #1e1e2e;
+  --sql-text: #cdd6f4;
+  --sql-header-bg: #181825;
+  --sql-header-text: #a6adc8;
+  --sql-border: #313244;
+  --sql-accent: #3b82f6;
+
+  // ── Send button ───────────────────────────
+  --btn-send-bg: #1d4ed8;
+  --btn-send-hover: #2563eb;
+  --btn-send-icon: #ffffff;
+
+  // ── Theme toggle ──────────────────────────
+  --toggle-bg: #1a2744;
+  --toggle-knob: #f0f6ff;
+  --toggle-active-bg: #1d4ed8;
+
+  // ── Scrollbar ─────────────────────────────
+  --scrollbar-track: #0d1528;
+  --scrollbar-thumb: #1a2744;
+}

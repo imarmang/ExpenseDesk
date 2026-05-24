@@ -1,0 +1,110 @@
+@use 'variables' as *;
+@use 'themes';
+
+// ── Fonts ─────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+// ── Reset ─────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ── Base ──────────────────────────────────────────────────────
+html {
+    height: 100%;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color $transition-base,
+    color $transition-base;
+  height: 100vh;
+}
+
+// ── Typography ────────────────────────────────────────────────
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+p {
+  line-height: 1.6;
+}
+
+code, pre, kbd {
+  font-family: $font-mono;
+}
+
+// ── Links ─────────────────────────────────────────────────────
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// ── Buttons ───────────────────────────────────────────────────
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: $font-primary;
+}
+
+// ── Inputs ────────────────────────────────────────────────────
+input, textarea {
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  outline: none;
+  border: none;
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: $radius-full;
+}
+
+// ── Selection ─────────────────────────────────────────────────
+::selection {
+  background: var(--message-user-bg);
+  color: var(--message-user-text);
+}
+
+// ── Root layout ───────────────────────────────────────────────
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  transition: background-color $transition-base;
+  overflow: hidden;
+
+  &__spacer {
+    flex: 1;
+  }
+}

@@ -1,0 +1,33 @@
+// The underscore prefix on _variables.scss is SCSS convention
+// it marks the file as a partial, meaning it's meant to be imported into other files and not compiled on its own.
+
+// ── Typography ──────────────────────────────
+$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.125rem;
+
+// ── Spacing ─────────────────────────────────
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// ── Border radius ───────────────────────────
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+$radius-full: 999px;
+
+// ── Transitions ─────────────────────────────
+$transition-fast: 0.15s ease;
+$transition-base: 0.25s ease;
+
+// ── Chat specific ───────────────────────────
+$chat-max-width: 820px;
+$message-max-width: 75%;
+$input-height: 56px;
