@@ -19,9 +19,7 @@ An offline AI-powered expense management assistant. Ask questions about your com
 - [Architecture](#architecture)
 - [Agents](#agents)
 - [Tech Stack](#tech-stack)
-- [Database Schema](#database-schema)
 - [Monorepo Structure](#monorepo-structure)
-- [Prerequisites](#prerequisites)
 - [Setup](#setup)
 - [Running locally](#running-locally-development)
 - [Running with Kubernetes](#running-with-kubernetes)
@@ -117,12 +115,11 @@ ExpenseDesk uses two specialized AI agents:
 
 | Layer | Technology |
 |---|---|
-| Frontend | React + Vite + TypeScript + SCSS |
+| Frontend | React + TypeScript + SCSS |
 | Backend | Python + FastAPI |
-| LLM Runtime | Ollama (fully local) |
+| LLM Runtime | Ollama  |
 | SQL Agent Model | qwen2.5-coder:7b |
 | Summarization Model | llama3.1:8b |
-| Embeddings | nomic-embed-text via Ollama |
 | MCP Server | Python + Anthropic MCP SDK |
 | Database | SQLite |
 | Vector Store | SQLite + sqlite-vec extension |
@@ -131,36 +128,24 @@ ExpenseDesk uses two specialized AI agents:
 
 ---
 
-## Database Schema
-
-```sql
-employees    — id, name, department_id, role
-departments  — id, name, manager_id
-expenses     — id, employee_id, amount, category_id, status, date, description
-categories   — id, name, budget_limit
-vendors      — id, name, contact, payment_terms
-approvals    — id, expense_id, approved_by, approved_at
-```
-
----
 
 ## Monorepo Structure
 
 ```
 ExpenseDesk/
-├── frontend/                   React + Vite + TypeScript
+├── frontend/                   
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── TopBar/
 │   │   │   ├── Chat/
 │   │   │   ├── Message/
-│   │   │   └── InputBar/
+│   │   │   └── Input/
 │   │   └── styles/
 │   │       ├── _variables.scss
 │   │       ├── _themes.scss
 │   │       └── global.scss
 │   └── Dockerfile
-├── backend/                    Python + FastAPI
+├── backend/                    
 │   ├── app/
 │   │   ├── main.py
 │   │   ├── agents/
@@ -169,33 +154,21 @@ ExpenseDesk/
 │   │   └── rag/
 │   │       └── retriever.py
 │   └── requirements.txt
-├── mcp-server/                 Anthropic MCP SDK
+├── mcp-server/                 
 │   ├── server.py
 │   └── requirements.txt
 ├── data/
-│   ├── database.db             SQLite database
-│   └── sql_examples.json       RAG example library
-├── k8s/                        Kubernetes manifests
+│   ├── database.db             
+│   └── sql_examples.json       
+├── k8s/                        
 │   ├── frontend.yaml
-│   ├── backend.yaml
+│   ├── backend.yaml 
 │   ├── mcp-server.yaml
 │   ├── ollama.yaml
 │   ├── ollama-pvc.yaml
 │   ├── sqlite-pvc.yaml
-│   └── configmap.yaml
-└── .env
+└   └── configmap.yaml
 ```
-
----
-
-## Prerequisites
-
-- macOS (Apple Silicon recommended)
-- Docker Desktop with Kubernetes enabled
-- Python 3.11
-- Node.js 20+
-- Ollama
-
 ---
 
 ## Setup
@@ -242,8 +215,7 @@ npm install
 
 ---
 
-## Running locally (development)
-
+## Run without Docker
 Open four terminal tabs:
 
 ```bash
@@ -267,7 +239,7 @@ Open `http://localhost:5173`
 
 ---
 
-## Running with Kubernetes
+## Run with Kubernetes
 
 Make sure Docker Desktop is running with Kubernetes enabled.
 
@@ -336,20 +308,19 @@ Interactive API docs available at `http://localhost:8000/docs`
 ## Key design decisions
 
 **Why offline?**
-Company expense data is sensitive. Running entirely on-device means no data ever leaves the network — important for firms with compliance requirements or air-gapped environments.
+Learn how to design a fully functional LLM-powered application with zero dependency on cloud APIs or internet connectivity. All inference, retrieval, and database operations run locally.
 
 **Why MCP for database access?**
 The MCP server acts as a validation layer between the AI agent and the database. It rejects dangerous SQL (DROP, TRUNCATE, ALTER) before execution, so the agent never has raw database access.
 
 **Why two agents?**
-`qwen2.5-coder:7b` is optimized for code tasks and produces precise SQL. `llama3.1:8b` is optimized for natural language and produces better human-readable summaries. Splitting the responsibility gives better results than asking one model to do both.
+Explore multi-agent architecture where two specialized agents coordinate on a single task. `qwen2.5-coder:7b` handles SQL generation while `llama3.1:8b` handles natural language summarization, each optimized for its role. Splitting the responsibility into two agents demonstrates how independent models can be orchestrated into a single coherent pipeline.
 
 **Why RAG for SQL generation?**
-Without examples, the model has to guess your schema's exact table and column names. The RAG layer retrieves the most relevant SQL examples from your library and injects them as few-shot examples — dramatically improving SQL accuracy on your specific schema.
+Without examples, the model guesses table and column names from the schema alone. The RAG layer uses `sqlite-vec` and `nomic-embed-text` to retrieve the most semantically similar SQL examples from a curated library and injects them into the prompt, dramatically improving SQL accuracy on the specific schema.
 
 **Why Kubernetes?**
-With four services (frontend, backend, MCP server, Ollama) running simultaneously, Kubernetes provides a single-command startup, automatic pod restarts on failure, and clean service-to-service communication via internal DNS — all without managing four separate terminal processes.
-
+Kubernetes was included specifically to practice container orchestration, writing Deployment and Service manifests, building Docker images, and running multiple pods on a local cluster. With four services (frontend, backend, MCP server, Ollama) each running as an independent pod, it demonstrates how multi-service applications are managed in a real orchestration environment without relying on managed cloud infrastructure.
 ---
 
 ## Kubernetes pod map
