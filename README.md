@@ -17,6 +17,8 @@ An offline AI-powered expense management assistant. Ask questions about your com
 
 - [What it does](#what-it-does)
 - [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Database Schema](#database-schema)
 - [Agents](#agents)
 - [Tech Stack](#tech-stack)
 - [Monorepo Structure](#monorepo-structure)
@@ -87,7 +89,27 @@ SQLite database
       ↓
 Chat UI — answer + collapsible SQL panel
 ```
+---
+## Prerequisites
 
+Before running ExpenseDesk make sure you have the following installed:
+
+- **macOS** (Apple Silicon recommended)
+- **Python 3.11** — [python.org](https://www.python.org/downloads/)
+- **Node.js 20+** — [nodejs.org](https://nodejs.org/)
+- **Docker Desktop** with Kubernetes enabled — [docker.com](https://www.docker.com/products/docker-desktop/)
+- **Ollama** — [ollama.com](https://ollama.com/)
+---
+## Database Schema
+
+```sql
+departments  — id, name, manager_id
+employees    — id, name, department_id, role
+categories   — id, name, budget_limit
+vendors      — id, name, contact, payment_terms
+expenses     — id, employee_id, amount, category_id, status, date, description
+approvals    — id, expense_id, approving_employee_id, approved_at
+```
 ---
 
 ## Agents
@@ -148,6 +170,7 @@ ExpenseDesk/
 ├── backend/                    
 │   ├── app/
 │   │   ├── main.py
+│   │   ├── schema.py
 │   │   ├── agents/
 │   │   │   ├── sql_agent.py
 │   │   │   └── summary_agent.py
@@ -180,15 +203,7 @@ git clone https://github.com/imarmang/ExpenseDesk.git
 cd ExpenseDesk
 ```
 
-### 2. Pull Ollama models
-
-```bash
-ollama pull qwen2.5-coder:7b
-ollama pull llama3.1:8b
-ollama pull nomic-embed-text
-```
-
-### 3. Set up the backend virtual environment
+### 2. Set up the backend virtual environment
 
 ```bash
 cd backend
@@ -197,7 +212,26 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up the MCP server virtual environment
+### 3. Seed the database
+
+```bash
+cd data
+python3 seed.py
+```
+
+This generates realistic fake data using Faker. The user can change the variables and the structure of the db in the seed.
+
+
+### 4. Pull Ollama models
+
+```bash
+ollama pull qwen2.5-coder:7b
+ollama pull llama3.1:8b
+ollama pull nomic-embed-text
+```
+
+
+### 5. Set up the MCP server virtual environment
 
 ```bash
 cd mcp-server
@@ -206,7 +240,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 5. Install frontend dependencies
+### 6. Install frontend dependencies
 
 ```bash
 cd frontend
@@ -327,10 +361,10 @@ Kubernetes was included specifically to practice container orchestration, writin
 
 ```
 Node: docker-desktop (local MacBook)
-├── Pod: frontend     → Nginx serving React app  → localhost:30000
-├── Pod: backend      → FastAPI                  → internal :8000
-├── Pod: mcp-server   → MCP server               → internal :3000
-└── Pod: ollama       → Ollama LLM runtime       → internal :11434
+├── Pod: frontend  
+├── Pod: backend      
+├── Pod: mcp-server   
+└── Pod: database     
 ```
 
 ---
