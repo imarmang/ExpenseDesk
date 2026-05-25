@@ -5,8 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
+from app.schema import get_schema_string
 
-# ── Logging ───────────────────────────────────────────────────
+# Logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
@@ -20,13 +21,13 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# ── Ollama client ─────────────────────────────────────────────
+# Ollama client
 ollama_client = OpenAI(
     base_url="http://localhost:11434/v1",
     api_key="ollama"
 )
 
-# ── CORS ──────────────────────────────────────────────────────
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173",
@@ -36,32 +37,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Request model ─────────────────────────────────────────────
+# Request model (DTO)
 class ChatRequest(BaseModel):
     message: str
 
-# ── Routes ────────────────────────────────────────────────────
-@app.get("/")
+# Routes
+# Status check
+@app.get( "/" )
 async def root():
-    return {"status": "ExpenseDesk API is running"}
+    return { "status": "ExpenseDesk API is running" }
 
-@app.post("/chat")
-async def chat(request: ChatRequest):
-    log.info("──────────────────────────────────────")
-    log.info(f"incoming message: {request.message}")
+@app.post( "/chat" )
+async def chat( request: ChatRequest ):
+    log.info( "──────────────────────────────────────" )
+    log.info( f"incoming message: {request.message}" )
 
     messages: list[ChatCompletionMessageParam] = [
         {
             "role": "system",
-            "content": "You are a SQL expert. The user will ask questions about an expense database. Respond with only the SQL query. No explanation. No markdown."
-        },
+            "content": f"""You are a SQL expert for a company expense management system.
+                Here is the database schema:
+                {get_schema_string()}
+                
+                Rules:
+                - Respond with only the SQL query
+                - No explanation
+                - No markdown
+                - No code blocks
+                - Use only the tables and columns defined in the schema above"""
+                        },
         {
             "role": "user",
             "content": request.message
         }
     ]
 
-    log.info(f"sending request to Ollama → model: qwen2.5-coder:7b")
+    log.info( f"sending request to Ollama → model: qwen2.5-coder:7b" )
     start = time.time()
 
     response = ollama_client.chat.completions.create(
@@ -70,13 +81,13 @@ async def chat(request: ChatRequest):
         temperature=0,
     )
 
-    elapsed = round(time.time() - start, 2)
-    log.info(f"Ollama responded in {elapsed}s")
+    elapsed = round( time.time() - start, 2 )
+    log.info( f"Ollama responded in {elapsed}s" )
 
     sql = response.choices[0].message.content.strip()
-    log.info(f"generated SQL: {sql}")
-    log.info(f"tokens used: {response.usage.total_tokens}")
-    log.info("──────────────────────────────────────")
+    log.info( f"generated SQL: {sql}" )
+    log.info( f"tokens used: {response.usage.total_tokens}" )
+    log.info( "──────────────────────────────────────" )
 
     return {
         "response": "Here is the query I generated for you.",

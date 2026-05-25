@@ -17,6 +17,7 @@ An offline AI-powered expense management assistant. Ask questions about your com
 
 - [What it does](#what-it-does)
 - [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
 - [Database Schema](#database-schema)
 - [Agents](#agents)
 - [Tech Stack](#tech-stack)
@@ -88,7 +89,16 @@ SQLite database
       ↓
 Chat UI — answer + collapsible SQL panel
 ```
+---
+## Prerequisites
 
+Before running ExpenseDesk make sure you have the following installed:
+
+- **macOS** (Apple Silicon recommended)
+- **Python 3.11** — [python.org](https://www.python.org/downloads/)
+- **Node.js 20+** — [nodejs.org](https://nodejs.org/)
+- **Docker Desktop** with Kubernetes enabled — [docker.com](https://www.docker.com/products/docker-desktop/)
+- **Ollama** — [ollama.com](https://ollama.com/)
 ---
 ## Database Schema
 
@@ -160,6 +170,7 @@ ExpenseDesk/
 ├── backend/                    
 │   ├── app/
 │   │   ├── main.py
+│   │   ├── schema.py
 │   │   ├── agents/
 │   │   │   ├── sql_agent.py
 │   │   │   └── summary_agent.py
