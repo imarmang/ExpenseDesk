@@ -29,7 +29,7 @@ export default function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark')
   }
 
-  const handleSend = (content: string) => {
+  const handleSend = async (content: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -39,18 +39,34 @@ export default function App() {
     setMessages(prev => [...prev, userMessage])
     setIsLoading(true)
 
-    // Stub assistant response for now
-    setTimeout(() => {
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: 'This is a stubbed response. Backend not connected yet.',
-        sql: 'SELECT * FROM expenses LIMIT 10;',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        try {
+        const res = await fetch('http://localhost:8000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: content })
+        })
+
+        const data = await res.json()
+
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: data.response,
+          sql: data.sql,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+        setMessages(prev => [...prev, assistantMessage])
+      } catch (error) {
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'Something went wrong. Make sure the backend is running.',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+        setMessages(prev => [...prev, errorMessage])
+      } finally {
+        setIsLoading(false)
       }
-      setMessages(prev => [...prev, assistantMessage])
-      setIsLoading(false)
-    }, 1500)
   }
 
   return (
