@@ -1,3 +1,5 @@
+# MCP SERVER
+# My host is the FastAPI, which has the MCP client inside, the client is responsible to invoke the MCP protocol to connect to the MCP server
 # 1. Server setup
 #    → create the FastMCP instance
 #    → define the database path
@@ -74,13 +76,17 @@ def get_schema( table_name: str ) -> list[ str ]:
 # 5. return rows as a list of dictionaries
 # 6. close the connection
 # block DDL (Data Definition Language), approve DML (Data Manipulation Language)
+# Allow Read-only operations
 # DDL: → DROP, TRUNCATE, ALTER, CREATE
 # DML: → SELECT, INSERT, UPDATE, DELETE
 @mcp.tool()
 def execute_query( sql: str ) -> list[dict]:
-    """Validates and executes a SQL query. Returns rows as a list of dicts."""
-    BLOCKED = [ "DROP", "TRUNCATE", "ALTER", "CREATE" ]
+    """Executes READ-ONLY SELECT queries against the database."""
 
+    if not sql.strip().upper().startswith( "SELECT" ):
+        return [{"error": "Only SELECT queries are allowed. This is a read-only server."}]
+
+    BLOCKED = [ "DROP", "TRUNCATE", "ALTER", "CREATE" ]
     # Step 1
     for keyword in BLOCKED:
         if keyword in sql.upper():
@@ -101,5 +107,6 @@ def execute_query( sql: str ) -> list[dict]:
         return [ {"error": str(e)} ]
 
 if __name__ == "__main__":
+    print( "ExpenseDesk MCP server starting...", flush=True )
     mcp.run()
 
