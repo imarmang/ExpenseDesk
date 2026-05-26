@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
-from app.schema import get_schema_string
 
 # Logging
 logging.basicConfig(
@@ -55,25 +54,28 @@ async def chat( request: ChatRequest ):
     messages: list[ChatCompletionMessageParam] = [
         {
             "role": "system",
-            "content": f"""You are a SQL expert for a company expense management system.
-                Here is the database schema:
-                {get_schema_string()}
-                
-                Rules:
-                - Respond with only the SQL query
-                - No explanation
-                - No markdown
-                - No code blocks
-                - Use only the tables and columns defined in the schema above"""
-                        },
+            "content": """You are a SQL expert for a company expense management system.
+    The database tracks employee expenses, approvals, departments, vendors and categories.
+
+    Use your available tools to:
+    1. Call list_tables to discover what tables exist
+    2. Call get_schema on relevant tables to get column names
+    3. Generate and execute a SELECT query to answer the question
+
+    Rules:
+    - Only use SELECT statements
+    - No explanation, no markdown, no code blocks
+    - Use only tables and columns you discover via tools"""
+        },
         {
             "role": "user",
             "content": request.message
         }
     ]
 
-    log.info( f"sending request to Ollama → model: qwen2.5-coder:7b" )
+    log.info(f"sending request to Ollama → model: qwen2.5-coder:7b")
     start = time.time()
+
 
     response = ollama_client.chat.completions.create(
         model="qwen2.5-coder:7b",
